@@ -25,7 +25,7 @@ class TritonPythonModel:
     """
 
     def initialize(self, args):
-        model_path = "/mnt/monai/models/model.pt"
+        model_path = "/mnt/models/pytorch/model.pt"
         self.inference_device = torch.device("cuda:0")
         self.preprocessing = Compose(
             [
