@@ -11,7 +11,7 @@ input [
     {
     name: "LABEL"
     data_type: TYPE_STRING
-    dims: [-1]
+    dims: [1]
   }
 ]
 

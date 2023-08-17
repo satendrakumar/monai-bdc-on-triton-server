@@ -25,7 +25,7 @@ if __name__ == "__main__":
         label_bytes = bytearray(encoded)
 
         image_data = np.array([image_bytes], dtype=np.bytes_)
-        label_data = np.array([label_bytes], dtype=np.bytes_)
+        label_data = np.array(label_bytes, dtype=np.bytes_)
         inputs = [
             httpclient.InferInput("IMAGE", image_data.shape, np_to_triton_dtype(image_data.dtype)),
             httpclient.InferInput("LABEL", label_data.shape, np_to_triton_dtype(label_data.dtype))
