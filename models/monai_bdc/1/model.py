@@ -51,7 +51,7 @@ class TritonPythonModel:
             # get the input by name (as configured in config.pbtxt)
             image = pb_utils.get_input_tensor_by_name(request, "IMAGE")
             label = pb_utils.get_input_tensor_by_name(request, "LABEL")
-            label_text =label.as_numpy().astype(np.bytes_).tobytes().decode('utf-8')
+            label_text = label.as_numpy().astype(np.bytes_).tobytes().decode()
             print("Label: " + label_text)
             tmpFile = NamedTemporaryFile(delete=False, suffix=".jpg")
             tmpFile.seek(0)
