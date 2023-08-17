@@ -7,6 +7,11 @@ input [
     data_type: TYPE_STRING
     dims: [ 1 ]
 
+  },
+    {
+    name: "LABEL"
+    data_type: TYPE_STRING
+    dims: [-1]
   }
 ]
 

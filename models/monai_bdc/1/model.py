@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import logging
 from tempfile import NamedTemporaryFile
 
 import torch
@@ -14,6 +15,7 @@ from monai.networks.nets import TorchVisionFCModel
 
 import triton_python_backend_utils as pb_utils
 
+logger = logging.getLogger(__name__)
 
 class TritonPythonModel:
     """
@@ -46,13 +48,13 @@ class TritonPythonModel:
 
     def execute(self, requests):
         responses = []
-        print("starting request")
+        logger.info("starting request")
         for request in requests:
             # get the input by name (as configured in config.pbtxt)
             image = pb_utils.get_input_tensor_by_name(request, "IMAGE")
-            #label = pb_utils.get_input_tensor_by_name(request, "LABEL")
-           # label_text =label.as_numpy()[0].decode() #label.as_numpy().astype(np.int_).tolist()
-            #print(label_text)
+            label = pb_utils.get_input_tensor_by_name(request, "LABEL")
+            label_text =label.as_numpy().astype(np.bytes_).tobytes().decode('utf-8')
+            logger.info("Label: " + label_text)
             tmpFile = NamedTemporaryFile(delete=False, suffix=".jpg")
             tmpFile.seek(0)
             tmpFile.write(image.as_numpy().astype(np.bytes_).tobytes())

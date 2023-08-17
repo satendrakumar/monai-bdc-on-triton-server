@@ -20,12 +20,18 @@ if __name__ == "__main__":
         jpeg_file = "/home/ubuntu/monai/bdc/sample_data/A/sample_A1.jpg"
         with open(jpeg_file, "rb") as f:
             image_bytes = f.read()
+        s = "A"
+        encoded = s.encode('utf-8')
+        label_bytes = bytearray(encoded)
 
         image_data = np.array([image_bytes], dtype=np.bytes_)
+        label_data = np.array([label_bytes], dtype=np.bytes_)
         inputs = [
-            httpclient.InferInput("IMAGE", image_data.shape, np_to_triton_dtype(image_data.dtype))
+            httpclient.InferInput("IMAGE", image_data.shape, np_to_triton_dtype(image_data.dtype)),
+            httpclient.InferInput("LABEL", label_data.shape, np_to_triton_dtype(label_data.dtype))
         ]
         inputs[0].set_data_from_numpy(image_data)
+        inputs[1].set_data_from_numpy(label_data)
         outputs = [
             httpclient.InferRequestedOutput("OUTPUT"),
         ]
