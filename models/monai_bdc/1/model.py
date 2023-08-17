@@ -67,7 +67,7 @@ class TritonPythonModel:
                     pred = self.inferer(batch['image'].to(device=self.inference_device), self.network)
                     pred = pred.softmax(-1)
                     preds.append(pred.detach().cpu().numpy())
-            output0_tensor = pb_utils.Tensor("OUTPUT", np.array([preds.encode()]))
+            output0_tensor = pb_utils.Tensor("OUTPUT", np.array([preds]))
             inference_response = pb_utils.InferenceResponse(
                 output_tensors=[output0_tensor],
             )

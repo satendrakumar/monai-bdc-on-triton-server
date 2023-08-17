@@ -41,7 +41,7 @@ if __name__ == "__main__":
         print(
             "Classification result for `{}`: {}.  (Inference time: {:6.0f} ms)".format(
                 jpeg_file,
-                response.as_numpy("OUTPUT0").astype(str)[0],
+                response.as_numpy("OUTPUT").astype(str)[0],
                 inference_time,
             )
         )
