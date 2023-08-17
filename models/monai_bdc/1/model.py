@@ -61,7 +61,7 @@ class TritonPythonModel:
                 _label = [0, 0, 1, 0]
             elif label_text == "D":
                 _label = [0, 0, 0, 1]
-            print("Label Array: ###########" + _label)
+            print("Label Array: ###########" + str(_label))
             tmpFile = NamedTemporaryFile(delete=False, suffix=".jpg")
             tmpFile.seek(0)
             tmpFile.write(image.as_numpy().astype(np.bytes_).tobytes())
