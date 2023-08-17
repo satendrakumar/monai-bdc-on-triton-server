@@ -52,12 +52,21 @@ class TritonPythonModel:
             image = pb_utils.get_input_tensor_by_name(request, "IMAGE")
             label = pb_utils.get_input_tensor_by_name(request, "LABEL")
             label_text = label.as_numpy().astype(np.bytes_).tobytes().decode()
-            print("Label: " + label_text)
+            print("Label: ######### " + label_text)
+            if label_text == "A":
+                _label = [1, 0, 0, 0]
+            elif label_text == "B":
+                _label = [0, 1, 0, 0]
+            elif label_text == "C":
+                _label = [0, 0, 1, 0]
+            elif label_text == "D":
+                _label = [0, 0, 0, 1]
+            print("Label Array: ###########" + _label)
             tmpFile = NamedTemporaryFile(delete=False, suffix=".jpg")
             tmpFile.seek(0)
             tmpFile.write(image.as_numpy().astype(np.bytes_).tobytes())
             tmpFile.close()
-            data_list = [{"image": tmpFile.name, "label": [1,0,0,0]}]
+            data_list = [{"image": tmpFile.name, "label": _label}]
             data = self.preprocessing(data_list)
             dataloader = DataLoader(dataset=data, batch_size=4, shuffle=False, num_workers=4)
             preds = []
