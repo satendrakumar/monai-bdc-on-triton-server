@@ -1,10 +1,6 @@
 import os
-from tempfile import NamedTemporaryFile
-
-import cv2
 import sys
 import json
-import glob
 import torch
 import numpy as np
 import monai
@@ -13,7 +9,6 @@ from monai.data import DataLoader
 from monai.transforms import Compose, LoadImaged, EnsureChannelFirstd, ScaleIntensityd, Resized, Activationsd,ToTensor, Lambda
 from monai.inferers.inferer import SimpleInferer
 from monai.networks.nets import TorchVisionFCModel
-
 
 import triton_python_backend_utils as pb_utils
 
@@ -25,7 +20,7 @@ class TritonPythonModel:
     """
 
     def initialize(self, args):
-        model_path = "/mnt/models/pytorch/model.pt"
+        model_path = "/mnt/pytorch/model.pt"
         self.inference_device = torch.device("cuda:0")
         self.preprocessing = Compose(
             [
@@ -53,15 +48,14 @@ class TritonPythonModel:
         for request in requests:
             # get the input by name (as configured in config.pbtxt)
             image = pb_utils.get_input_tensor_by_name(request, "IMAGE")
-            label = pb_utils.get_input_tensor_by_name(request, "LABEL")
-            label_array = label.as_numpy()[0].decode()
-            print(label_array)
-
+            #label = pb_utils.get_input_tensor_by_name(request, "LABEL")
+           # label_text =label.as_numpy()[0].decode() #label.as_numpy().astype(np.int_).tolist()
+            #print(label_text)
             tmpFile = NamedTemporaryFile(delete=False, suffix=".jpg")
             tmpFile.seek(0)
             tmpFile.write(image.as_numpy().astype(np.bytes_).tobytes())
             tmpFile.close()
-            data_list = [{"image": tmpFile.name, "label": label_array}]
+            data_list = [{"image": tmpFile.name, "label": [1,0,0,0]}]
             data = self.preprocessing(data_list)
             dataloader = DataLoader(dataset=data, batch_size=4, shuffle=False, num_workers=4)
             preds = []

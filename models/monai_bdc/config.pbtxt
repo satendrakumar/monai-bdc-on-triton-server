@@ -7,12 +7,6 @@ input [
     data_type: TYPE_STRING
     dims: [ 1 ]
 
-  },
-  {
-    name: "LABEL"
-    data_type: TYPE_INT32
-    dims: [ 1 ]
-
   }
 ]
 
@@ -27,7 +21,5 @@ output [
 instance_group [
   {
     kind: KIND_GPU
-    count: 1
-    gpus: [ 0 ]
   }
 ]
